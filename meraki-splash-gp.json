@@ -1,0 +1,1001 @@
+[
+    {
+        "id": "bb2f8660.927118",
+        "type": "debug",
+        "z": "7a0a330e.8993cc",
+        "name": "excapSignOn raw data",
+        "active": true,
+        "console": "false",
+        "complete": "payload",
+        "x": 200,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "4fa65852.885558",
+        "type": "http in",
+        "z": "7a0a330e.8993cc",
+        "name": "",
+        "url": "/splashSignOn",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 150,
+        "y": 720,
+        "wires": [
+            [
+                "bb2f8660.927118",
+                "e51a6a75.e92dd8"
+            ]
+        ]
+    },
+    {
+        "id": "b4c78cc.b6ef17",
+        "type": "http response",
+        "z": "7a0a330e.8993cc",
+        "name": "",
+        "x": 790,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "fc184979.da7908",
+        "type": "http in",
+        "z": "7a0a330e.8993cc",
+        "name": "",
+        "url": "/splashClick",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 160,
+        "y": 200,
+        "wires": [
+            [
+                "1cd31e3c.986262",
+                "a288d721.313328"
+            ]
+        ]
+    },
+    {
+        "id": "2c9ad3eb.84d10c",
+        "type": "http response",
+        "z": "7a0a330e.8993cc",
+        "name": "",
+        "x": 770,
+        "y": 760,
+        "wires": []
+    },
+    {
+        "id": "28fb3624.782e7a",
+        "type": "template",
+        "z": "7a0a330e.8993cc",
+        "name": "HTML Login Page",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<!DOCTYPE html>\n<html>\n<head>\n{{{payload.css}}}\n\n\n    <meta charset=\"utf-8\">\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n\n    <title>Registration Form</title>\n\n</head>\n<body>\n\n    \n\n\n    <div class=\"main-content\">\n    <form class=\"form-register\" method=POST action={{payload.login_url}} />\n        <input type=\"hidden\" name=\"continue_url\" value={{payload.continue_url}} />\n        <input type=\"hidden\" name=\"host\" value ={{host}}>\n        <input type=\"hidden\" name=\"base_grant_url\" value = {{payload.base_grant_url}}/>\n        <input type=\"hidden\" name=\"user_continue_url\" value = {{payload.user_continue_url}}/>\n        <input type=\"hidden\" name=\"node_mac\" value = {{payload.node_mac}}/>\n        <input type=\"hidden\" name=\"client_ip\" value = {{payload.client_ip}}/>\n        <input type=\"hidden\" name=\"client_mac\" value = {{payload.client_mac}}/>\n        <input type=\"hidden\" name=\"success_url\" value={{payload.continue_url}} />\n\n            <div class=\"form-register-with-email\">\n\n                <div class=\"form-white-background\">\n\n                    <div class=\"form-title-row\">\n                        <h1>Login to WiFi</h1>\n                    </div>\n\n                    <div class=\"form-row\">\n                        <label>\n                            <span>Email</span>\n                            <input type=\"email\" name=\"email\" required>\n                        </label>\n                    </div>\n\n                    <div class=\"form-row\">\n                        <label>\n                            <span>Password</span>\n                            <input type=\"password\" name=\"password\" required>\n                        </label>\n                    </div>\n\n                    <div class=\"form-row\">\n                        <label class=\"form-checkbox\">\n                            <input type=\"checkbox\" name=\"checkbox\" checked value=\"accepted\" required>\n                            <span>I agree to the <a href=\"/splashTerms\" target\"_blank\">terms and conditions</a></span>\n                        </label>\n                    </div>\n\n                    <div class=\"form-row\">\n                        <button type=\"submit\">Register</button>\n                    </div>\n\n                </div>\n\n            </div>\n\n            <!-- Future Social Features\n            <div class=\"form-sign-in-with-social\">\n\n                <div class=\"form-row form-title-row\">\n                    <span class=\"form-title\">Sign in with</span>\n                </div>\n\n                <a href=\"#\" class=\"form-google-button\">Google</a>\n                <a href=\"#\" class=\"form-facebook-button\">Facebook</a>\n                <a href=\"#\" class=\"form-twitter-button\">Twitter</a>\n                \n\n            </div>\n            -->\n\n        </form>\n                Your IP: {{payload.client_ip}}\n                <br>\n                Your MAC: {{payload.client_mac}}\n\n    </div>\n\n</body>\n\n</html>",
+        "x": 570,
+        "y": 760,
+        "wires": [
+            [
+                "2c9ad3eb.84d10c"
+            ]
+        ]
+    },
+    {
+        "id": "1cd31e3c.986262",
+        "type": "function",
+        "z": "7a0a330e.8993cc",
+        "name": "Set login_url",
+        "func": "msg.payload.login_url = msg.payload.base_grant_url + '?continue_url=' + msg.payload.user_continue_url;\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 390,
+        "y": 200,
+        "wires": [
+            [
+                "a43d7503.439258"
+            ]
+        ]
+    },
+    {
+        "id": "a288d721.313328",
+        "type": "debug",
+        "z": "7a0a330e.8993cc",
+        "name": "excapClick raw data",
+        "active": true,
+        "console": "false",
+        "complete": "payload",
+        "x": 220,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "bd3cc36e.c4635",
+        "type": "comment",
+        "z": "7a0a330e.8993cc",
+        "name": "Meraki Click-through with Group Policy, read more...",
+        "info": "Configure by placing this host server address\nfollowed by /excapClick in the Custom Splash Page URL\nsection of the Meraki Dashboard.\n\nie. https://yourserver:1880/splashpClick\n\nBe sure to update the \"walled garden\" in the \nMeraki Dashboard with the IP address of your \nserver and any other resources required before\nlogin, such as your website, images, CSS, etc.\n\nThe HTML page can be modified as needed. \n",
+        "x": 243,
+        "y": 159,
+        "wires": []
+    },
+    {
+        "id": "39ea77c5.5b6f28",
+        "type": "comment",
+        "z": "7a0a330e.8993cc",
+        "name": "Meraki Sign-on, read more...",
+        "info": "Configure by placing this host server address\nfollowed by /excapClick in the Custom Splash Page URL\nsection of the Meraki Dashboard.\n\nie. https://yourserver:1880/excapSignOn\n\nBe sure to update the \"walled garden\" in the \nMeraki Dashboard with the IP address of your \nserver and any other resources required before\nlogin, such as your website, images, CSS, etc.\n\n",
+        "x": 159,
+        "y": 676,
+        "wires": []
+    },
+    {
+        "id": "ea9b634f.93eee",
+        "type": "http in",
+        "z": "7a0a330e.8993cc",
+        "name": "",
+        "url": "/splashClickLogin",
+        "method": "post",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 180,
+        "y": 380,
+        "wires": [
+            [
+                "14b7c752.39f169",
+                "5928c62b.cf9a68",
+                "aaead32b.774fe"
+            ]
+        ]
+    },
+    {
+        "id": "992ef7db.356188",
+        "type": "function",
+        "z": "7a0a330e.8993cc",
+        "name": "Process login with 302 redirect",
+        "func": "\nmsg.statusCode = 302;\nmsg.headers = {\n  'Location': msg.base_grant_url+\"?continue_url=\"+msg.user_continue_url\n  //add other headers here...\n};\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 630,
+        "y": 560,
+        "wires": [
+            [
+                "490e9cbd.59fcf4",
+                "31a1fc13.74e124"
+            ]
+        ]
+    },
+    {
+        "id": "490e9cbd.59fcf4",
+        "type": "http response",
+        "z": "7a0a330e.8993cc",
+        "name": "",
+        "x": 870,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "14b7c752.39f169",
+        "type": "debug",
+        "z": "7a0a330e.8993cc",
+        "name": "excapClick Login data",
+        "active": true,
+        "console": "false",
+        "complete": "payload",
+        "x": 220,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "ceb023fa.dde37",
+        "type": "comment",
+        "z": "7a0a330e.8993cc",
+        "name": "Store form data - read more...",
+        "info": "The login data now can be sent somehwere to be \nlogged. A link node is attached to easily use\nthis data in other parts of the flow.",
+        "x": 600,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "8f8fd38e.0d854",
+        "type": "comment",
+        "z": "7a0a330e.8993cc",
+        "name": "Terms and Conditions",
+        "info": "",
+        "x": 144,
+        "y": 1030,
+        "wires": []
+    },
+    {
+        "id": "cc42e01c.d58de",
+        "type": "comment",
+        "z": "7a0a330e.8993cc",
+        "name": "Success",
+        "info": "",
+        "x": 106,
+        "y": 818,
+        "wires": []
+    },
+    {
+        "id": "a45636e8.8181c8",
+        "type": "http in",
+        "z": "7a0a330e.8993cc",
+        "name": "",
+        "url": "/splashTerms",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 150,
+        "y": 1080,
+        "wires": [
+            [
+                "ae1ccfca.49be1"
+            ]
+        ]
+    },
+    {
+        "id": "1cd2ce.f1460d32",
+        "type": "http response",
+        "z": "7a0a330e.8993cc",
+        "name": "",
+        "x": 790,
+        "y": 1120,
+        "wires": []
+    },
+    {
+        "id": "c9a8c723.df5278",
+        "type": "template",
+        "z": "7a0a330e.8993cc",
+        "name": "HTML Terms and Conditions",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<head>\n    <title>Terms and Conditions</title>\n{{{payload}}}\n</head>\n<body>\n    <div class=\"container\">\n    <h1>Terms and Conditions</h1>\n    <ul>\n        <li>Please use our network responsibly. </li>\n        <li>Your computer's MAC and IP address will be logged.</li>\n    </ul>\n    </div>\n</body>\n\n\n",
+        "x": 600,
+        "y": 1120,
+        "wires": [
+            [
+                "1cd2ce.f1460d32"
+            ]
+        ]
+    },
+    {
+        "id": "3d4671.6811e99",
+        "type": "http in",
+        "z": "7a0a330e.8993cc",
+        "name": "",
+        "url": "/splashSuccess",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 150,
+        "y": 860,
+        "wires": [
+            [
+                "718240a5.26901"
+            ]
+        ]
+    },
+    {
+        "id": "1b869646.74869a",
+        "type": "http response",
+        "z": "7a0a330e.8993cc",
+        "name": "",
+        "x": 790,
+        "y": 900,
+        "wires": []
+    },
+    {
+        "id": "e9fe25e6.9f39a8",
+        "type": "template",
+        "z": "7a0a330e.8993cc",
+        "name": "HTML Success",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<head>\n    <title>Success!</title>\n{{{payload.css}}}\n</head>\n<body>\n    <div class=\"container\">\n    <center><h1>Success!</h1>\n    <h2>You can now use the network.</h2>\n    </center>\n    </div>\n</body>\n\n\n",
+        "x": 560,
+        "y": 900,
+        "wires": [
+            [
+                "1b869646.74869a"
+            ]
+        ]
+    },
+    {
+        "id": "6272f727.0f7958",
+        "type": "comment",
+        "z": "7a0a330e.8993cc",
+        "name": "Error: Not connected to AP",
+        "info": "",
+        "x": 160,
+        "y": 1153,
+        "wires": []
+    },
+    {
+        "id": "544067da.0c3c08",
+        "type": "http in",
+        "z": "7a0a330e.8993cc",
+        "name": "",
+        "url": "/splashNotConnected",
+        "method": "get",
+        "upload": false,
+        "swaggerDoc": "",
+        "x": 170,
+        "y": 1200,
+        "wires": [
+            [
+                "4d7d2da5.5c1904"
+            ]
+        ]
+    },
+    {
+        "id": "23361e60.095502",
+        "type": "http response",
+        "z": "7a0a330e.8993cc",
+        "name": "",
+        "x": 790,
+        "y": 1240,
+        "wires": []
+    },
+    {
+        "id": "6acd76cb.615a58",
+        "type": "template",
+        "z": "7a0a330e.8993cc",
+        "name": "HTML Terms and Conditions",
+        "field": "payload",
+        "format": "handlebars",
+        "template": "<head>\n    <title>Error: Not Connected</title>\n{{{payload}}}\n</head>\n<body>\n    <div class=\"container\">\n    <h1>Error: Not Connected</h1>\n    <p>\n        Hmm, somethings not right. It appears you\n        are not connected to the correct wireless network.\n    </p>\n    </div>\n</body>\n\n\n",
+        "x": 600,
+        "y": 1240,
+        "wires": [
+            [
+                "23361e60.095502"
+            ]
+        ]
+    },
+    {
+        "id": "8bc1ed82.3f332",
+        "type": "comment",
+        "z": "7a0a330e.8993cc",
+        "name": "Cisco Meraki ExCap Service - Group Policy",
+        "info": "More information about the Meraki ExCap API:\nhttps://meraki.cisco.com/lib/pdf/meraki_whitepaper_captive_portal.pdf\n\nEnjoy!\n\nWritten by Cory Guynn, 2015.\nConsulting Engineer @ https://meraki.cisco.com/\nTechnical Blogger @ http://www.InternetOfLego.com",
+        "x": 511.5,
+        "y": 25,
+        "wires": []
+    },
+    {
+        "id": "a43d7503.439258",
+        "type": "template",
+        "z": "7a0a330e.8993cc",
+        "name": "CSS Style",
+        "field": "payload.css",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "<style>\nhtml{\n    background-color: #f3f3f3;\n}\n\n.form-register{\n    max-width: 1000px;\n    width: 100%;\n    margin: 0 auto;\n\n    font: bold 14px sans-serif;\n    text-align: center;\n}\n\n.form-register-with-email{\n    position: relative;\n    display: inline-block;\n    vertical-align: top;\n    margin-right: 130px;\n    text-align: center;\n}\n\n.form-register-with-email .form-white-background{\n    width: 570px;\n    box-sizing: border-box;\n    background-color: #ffffff;\n    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);\n    padding: 60px 80px;\n    margin-bottom: 35px;\n}\n\n.form-register-with-email .form-row{\n    text-align: left;\n    margin-bottom: 23px;\n}\n\n.form-register-with-email .form-title-row{\n    text-align: center;\n    margin-bottom: 50px;\n}\n\n.form-register-with-email h1{\n    display: inline-block;\n    box-sizing: border-box;\n    color:  #4c565e;\n    font-size: 24px;\n    padding: 0 20px 15px;\n    border-bottom: 2px solid #6caee0;\n    margin: 0;\n}\n\n.form-register-with-email .form-row > label span{\n    display: inline-block;\n    box-sizing: border-box;\n    color:  #5f5f5f;\n    width: 125px;\n    text-align: right;\n    padding-right: 25px;\n}\n\n.form-register-with-email input{\n    color:  #5f5f5f;\n    box-sizing: border-box;\n    width: 230px;\n    box-shadow: 1px 2px 4px 0 rgba(0, 0, 0, 0.08);\n    padding: 12px 18px;\n    border: 1px solid #dbdbdb;\n}\n\n.form-register-with-email .form-checkbox input{\n    margin-left: 128px;\n    margin-right: 10px;\n    width: auto;\n    vertical-align: top;\n}\n\n.form-register-with-email .form-row .form-checkbox span{\n    font-size: 12px;\n    font-weight: normal;\n    display: inline-block;\n    text-align: left;\n    width: 220px;\n    margin: 0;\n}\n\n.form-register-with-email .form-checkbox span a{\n    text-decoration: none;\n    color:  #6caee0;\n}\n\n.form-register-with-email button{\n    display: block;\n    border-radius: 2px;\n    background-color:  #6caee0;\n    color: #ffffff;\n    font-weight: bold;\n    box-shadow: 1px 2px 4px 0 rgba(0, 0, 0, 0.08);\n    padding: 15px 35px;\n    border: 0;\n    margin: 55px auto 0;\n    cursor: pointer;\n}\n\n.form-register-with-email .form-log-in-with-existing{\n    text-decoration: none;\n    padding: 4px 8px;\n    font-weight: normal;\n    color: #7b9d62;\n    background-color: #d6f0c3;\n}\n\n\n.form-sign-in-with-social{\n    display: inline-block;\n    max-width: 180px;\n    box-sizing: border-box;\n    vertical-align: top;\n    text-align: center;\n    margin-top: 100px;\n}\n\n.form-sign-in-with-social .form-title-row{\n    margin-bottom: 50px;\n}\n\n.form-sign-in-with-social .form-title{\n    box-sizing: border-box;\n    color:  #4c565e;\n    font-size: 24px;\n    padding: 15px 20px;\n    border-bottom: 2px solid #6caee0;\n}\n\n.form-sign-in-with-social .form-google-button{\n    color:  #ffffff;\n    display: block;\n    width: 145px;\n    height: 40px;\n    font-size: 12px;\n    line-height: 40px;\n    background-color:  rgba(222, 110, 60, 0.9);\n    box-shadow: 1px 2px 2px 0 rgba(0, 0, 0, 0.08);\n    border-radius: 2px;\n    margin: 8px auto;\n    text-decoration: none;\n}\n\n.form-sign-in-with-social .form-facebook-button{\n    color:  #ffffff;\n    display: block;\n    width: 145px;\n    height: 40px;\n    font-size: 12px;\n    line-height: 40px;\n    background-color:  rgba(75, 136, 194, 0.9);\n    box-shadow: 1px 2px 2px 0 rgba(0, 0, 0, 0.08);\n    border-radius: 2px;\n    margin: 8px auto;\n    text-decoration: none;\n}\n\n.form-sign-in-with-social .form-twitter-button{\n    color:  #ffffff;\n    display: block;\n    width: 145px;\n    height: 40px;\n    font-size: 12px;\n    line-height: 40px;\n    background-color:  rgba(123, 195, 226, 0.9);\n    box-shadow: 1px 2px 2px 0 rgba(0, 0, 0, 0.08);\n    border-radius: 2px;\n    margin: 8px auto;\n    text-decoration: none;\n}\n\n/*\tMaking the form responsive. Remove these media queries\n    if you don't need the form to work on mobile devices. */\n\n@media (max-width: 900px) {\n\n    .form-register{\n        margin: 20px auto;\n    }\n\n    .form-register-with-email{\n        position: relative;\n        display: block;\n        margin: 0;\n    }\n\n    .form-register-with-email .form-white-background{\n        margin: 0 auto 32px;\n    }\n\n\n\n    .form-sign-in-with-social {\n        margin-top: 105px;\n    }\n\n}\n\n@media (max-width: 600px) {\n\n    .form-register-with-email .form-white-background{\n        width: 300px;\n        padding-left: 35px;\n        padding-right: 35px;\n    }\n\n    .form-register-with-email .form-row > label span{\n        display: block;\n        text-align: left;\n        padding: 0 0 10px;\n    }\n\n    .form-register-with-email input{\n        display: block;\n        margin: 0 auto;\n    }\n\n    .form-register-with-email .form-checkbox input{\n        display: inline-block;\n        margin-left: 0;\n    }\n\n    .form-register-with-email .form-checkbox span{\n        width: 200px !important;\n    }\n\n    .form-register-with-email:after{\n        bottom: -80px;\n        left: 50%;\n        margin-left: -25px;\n    }\n\n}\n</style>",
+        "x": 560,
+        "y": 200,
+        "wires": [
+            [
+                "70c4da35.7ab2e4"
+            ]
+        ]
+    },
+    {
+        "id": "e51a6a75.e92dd8",
+        "type": "template",
+        "z": "7a0a330e.8993cc",
+        "name": "CSS Style",
+        "field": "payload.css",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "<style>\nhtml{\n    background-color: #f3f3f3;\n}\n\n.form-register{\n    max-width: 1000px;\n    width: 100%;\n    margin: 0 auto;\n\n    font: bold 14px sans-serif;\n    text-align: center;\n}\n\n.form-register-with-email{\n    position: relative;\n    display: inline-block;\n    vertical-align: top;\n    margin-right: 130px;\n    text-align: center;\n}\n\n.form-register-with-email .form-white-background{\n    width: 570px;\n    box-sizing: border-box;\n    background-color: #ffffff;\n    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);\n    padding: 60px 80px;\n    margin-bottom: 35px;\n}\n\n.form-register-with-email .form-row{\n    text-align: left;\n    margin-bottom: 23px;\n}\n\n.form-register-with-email .form-title-row{\n    text-align: center;\n    margin-bottom: 50px;\n}\n\n.form-register-with-email h1{\n    display: inline-block;\n    box-sizing: border-box;\n    color:  #4c565e;\n    font-size: 24px;\n    padding: 0 20px 15px;\n    border-bottom: 2px solid #6caee0;\n    margin: 0;\n}\n\n.form-register-with-email .form-row > label span{\n    display: inline-block;\n    box-sizing: border-box;\n    color:  #5f5f5f;\n    width: 125px;\n    text-align: right;\n    padding-right: 25px;\n}\n\n.form-register-with-email input{\n    color:  #5f5f5f;\n    box-sizing: border-box;\n    width: 230px;\n    box-shadow: 1px 2px 4px 0 rgba(0, 0, 0, 0.08);\n    padding: 12px 18px;\n    border: 1px solid #dbdbdb;\n}\n\n.form-register-with-email .form-checkbox input{\n    margin-left: 128px;\n    margin-right: 10px;\n    width: auto;\n    vertical-align: top;\n}\n\n.form-register-with-email .form-row .form-checkbox span{\n    font-size: 12px;\n    font-weight: normal;\n    display: inline-block;\n    text-align: left;\n    width: 220px;\n    margin: 0;\n}\n\n.form-register-with-email .form-checkbox span a{\n    text-decoration: none;\n    color:  #6caee0;\n}\n\n.form-register-with-email button{\n    display: block;\n    border-radius: 2px;\n    background-color:  #6caee0;\n    color: #ffffff;\n    font-weight: bold;\n    box-shadow: 1px 2px 4px 0 rgba(0, 0, 0, 0.08);\n    padding: 15px 35px;\n    border: 0;\n    margin: 55px auto 0;\n    cursor: pointer;\n}\n\n.form-register-with-email .form-log-in-with-existing{\n    text-decoration: none;\n    padding: 4px 8px;\n    font-weight: normal;\n    color: #7b9d62;\n    background-color: #d6f0c3;\n}\n\n\n.form-sign-in-with-social{\n    display: inline-block;\n    max-width: 180px;\n    box-sizing: border-box;\n    vertical-align: top;\n    text-align: center;\n    margin-top: 100px;\n}\n\n.form-sign-in-with-social .form-title-row{\n    margin-bottom: 50px;\n}\n\n.form-sign-in-with-social .form-title{\n    box-sizing: border-box;\n    color:  #4c565e;\n    font-size: 24px;\n    padding: 15px 20px;\n    border-bottom: 2px solid #6caee0;\n}\n\n.form-sign-in-with-social .form-google-button{\n    color:  #ffffff;\n    display: block;\n    width: 145px;\n    height: 40px;\n    font-size: 12px;\n    line-height: 40px;\n    background-color:  rgba(222, 110, 60, 0.9);\n    box-shadow: 1px 2px 2px 0 rgba(0, 0, 0, 0.08);\n    border-radius: 2px;\n    margin: 8px auto;\n    text-decoration: none;\n}\n\n.form-sign-in-with-social .form-facebook-button{\n    color:  #ffffff;\n    display: block;\n    width: 145px;\n    height: 40px;\n    font-size: 12px;\n    line-height: 40px;\n    background-color:  rgba(75, 136, 194, 0.9);\n    box-shadow: 1px 2px 2px 0 rgba(0, 0, 0, 0.08);\n    border-radius: 2px;\n    margin: 8px auto;\n    text-decoration: none;\n}\n\n.form-sign-in-with-social .form-twitter-button{\n    color:  #ffffff;\n    display: block;\n    width: 145px;\n    height: 40px;\n    font-size: 12px;\n    line-height: 40px;\n    background-color:  rgba(123, 195, 226, 0.9);\n    box-shadow: 1px 2px 2px 0 rgba(0, 0, 0, 0.08);\n    border-radius: 2px;\n    margin: 8px auto;\n    text-decoration: none;\n}\n\n/*\tMaking the form responsive. Remove these media queries\n    if you don't need the form to work on mobile devices. */\n\n@media (max-width: 900px) {\n\n    .form-register{\n        margin: 20px auto;\n    }\n\n    .form-register-with-email{\n        position: relative;\n        display: block;\n        margin: 0;\n    }\n\n    .form-register-with-email .form-white-background{\n        margin: 0 auto 32px;\n    }\n\n\n\n    .form-sign-in-with-social {\n        margin-top: 105px;\n    }\n\n}\n\n@media (max-width: 600px) {\n\n    .form-register-with-email .form-white-background{\n        width: 300px;\n        padding-left: 35px;\n        padding-right: 35px;\n    }\n\n    .form-register-with-email .form-row > label span{\n        display: block;\n        text-align: left;\n        padding: 0 0 10px;\n    }\n\n    .form-register-with-email input{\n        display: block;\n        margin: 0 auto;\n    }\n\n    .form-register-with-email .form-checkbox input{\n        display: inline-block;\n        margin-left: 0;\n    }\n\n    .form-register-with-email .form-checkbox span{\n        width: 200px !important;\n    }\n\n    .form-register-with-email:after{\n        bottom: -80px;\n        left: 50%;\n        margin-left: -25px;\n    }\n\n}\n</style>",
+        "x": 540,
+        "y": 720,
+        "wires": [
+            [
+                "28fb3624.782e7a"
+            ]
+        ]
+    },
+    {
+        "id": "718240a5.26901",
+        "type": "template",
+        "z": "7a0a330e.8993cc",
+        "name": "CSS Style",
+        "field": "payload.css",
+        "fieldType": "msg",
+        "format": "html",
+        "syntax": "mustache",
+        "template": "<style type=\"text/css\">\n.container{\n    max-width: 500px;\n    padding: 10px 20px;\n    background: #f4f7f8;\n    margin: 10px auto;\n    padding: 20px;\n    background: #f4f7f8;\n    border-radius: 8px;\n    font-family: Georgia, \"Times New Roman\", Times, serif;\n}\n</style>",
+        "x": 540,
+        "y": 860,
+        "wires": [
+            [
+                "e9fe25e6.9f39a8"
+            ]
+        ]
+    },
+    {
+        "id": "ae1ccfca.49be1",
+        "type": "template",
+        "z": "7a0a330e.8993cc",
+        "name": "CSS Style",
+        "field": "payload",
+        "format": "html",
+        "template": "<style type=\"text/css\">\n.container{\n    max-width: 500px;\n    padding: 10px 20px;\n    background: #f4f7f8;\n    margin: 10px auto;\n    padding: 20px;\n    background: #f4f7f8;\n    border-radius: 8px;\n    font-family: Georgia, \"Times New Roman\", Times, serif;\n}\n</style>",
+        "x": 540,
+        "y": 1080,
+        "wires": [
+            [
+                "c9a8c723.df5278"
+            ]
+        ]
+    },
+    {
+        "id": "4d7d2da5.5c1904",
+        "type": "template",
+        "z": "7a0a330e.8993cc",
+        "name": "CSS Style",
+        "field": "payload",
+        "format": "html",
+        "template": "<style type=\"text/css\">\n.container{\n    max-width: 500px;\n    padding: 10px 20px;\n    background: #f4f7f8;\n    margin: 10px auto;\n    padding: 20px;\n    background: #f4f7f8;\n    border-radius: 8px;\n    font-family: Georgia, \"Times New Roman\", Times, serif;\n}\n</style>",
+        "x": 540,
+        "y": 1200,
+        "wires": [
+            [
+                "6acd76cb.615a58"
+            ]
+        ]
+    },
+    {
+        "id": "2aa0ef23.89911",
+        "type": "comment",
+        "z": "7a0a330e.8993cc",
+        "name": "Supporting Pages",
+        "info": "",
+        "x": 95,
+        "y": 969,
+        "wires": []
+    },
+    {
+        "id": "31a1fc13.74e124",
+        "type": "debug",
+        "z": "7a0a330e.8993cc",
+        "name": "Process Login",
+        "active": true,
+        "console": "false",
+        "complete": "true",
+        "x": 840,
+        "y": 600,
+        "wires": []
+    },
+    {
+        "id": "5928c62b.cf9a68",
+        "type": "link out",
+        "z": "7a0a330e.8993cc",
+        "name": "excapClick Login",
+        "links": [
+            "bc43f620.69aed8",
+            "e0de7457.971e68"
+        ],
+        "x": 315,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "985b9e75.bb0a",
+        "type": "inject",
+        "z": "7a0a330e.8993cc",
+        "name": "Sets Defaults - Injected at start",
+        "topic": "",
+        "payload": "Setting Environment Variables",
+        "payloadType": "str",
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "x": 195,
+        "y": 96.99999618530273,
+        "wires": [
+            [
+                "60671c42.395944"
+            ]
+        ]
+    },
+    {
+        "id": "60671c42.395944",
+        "type": "function",
+        "z": "7a0a330e.8993cc",
+        "name": "Env Variables: UPDATE THIS",
+        "func": "//  ###### User Defined Variables ######\n\nconst API_KEY = ''; //Your API KEY (Keep this secret. Do not publish)\nvar shard = 'n143'; // https://n149.meraki.com , where n149 represent the shard number. This is defined to avoid redirect issues.\nvar orgId = ''; // Your default Organization ID\nvar netId = '';// Your Network ID\nvar policyId = ''; // Your Policy ID\n\n\n\n\n\n// ###### Set Flow Context variables ######\n\n\n// Assign to Global Context \nflow.set('apiKey', API_KEY); \nflow.set('shard', shard);\nflow.set('orgId', orgId);\nflow.set('netId', netId);\nflow.set('policyId', policyId);\n\nmsg.payload = \"settings set\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 465,
+        "y": 96.99999618530273,
+        "wires": [
+            [
+                "6cd9d02d.6c8bc"
+            ]
+        ]
+    },
+    {
+        "id": "6cd9d02d.6c8bc",
+        "type": "debug",
+        "z": "7a0a330e.8993cc",
+        "name": "Flow Env Variables",
+        "active": true,
+        "console": "false",
+        "complete": "true",
+        "x": 775,
+        "y": 96.99999618530273,
+        "wires": []
+    },
+    {
+        "id": "9cb8d10f.3b05b",
+        "type": "http request",
+        "z": "7a0a330e.8993cc",
+        "name": "",
+        "method": "use",
+        "ret": "obj",
+        "url": "",
+        "tls": "",
+        "x": 870,
+        "y": 440,
+        "wires": [
+            [
+                "992ef7db.356188",
+                "b4b9c812.9d06f8"
+            ]
+        ]
+    },
+    {
+        "id": "aaead32b.774fe",
+        "type": "function",
+        "z": "7a0a330e.8993cc",
+        "name": "Format Data ",
+        "func": "msg.base_grant_url = msg.payload.base_grant_url;\nmsg.user_continue_url = msg.payload.user_continue_url;\nmsg.netId = flow.get(\"netId\"); \nmsg.clientMac = msg.payload.client_mac;\nmsg.policyId = flow.get(\"policyId\");\n\nmsg.payload = {\n        \"devicePolicy\":\"group\",\n        \"groupPolicyId\":msg.policyId\n    };\n\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 570,
+        "y": 380,
+        "wires": [
+            [
+                "f4a3c8dc.6a5028"
+            ]
+        ]
+    },
+    {
+        "id": "f4a3c8dc.6a5028",
+        "type": "function",
+        "z": "7a0a330e.8993cc",
+        "name": "Meraki API - Bind Group Policy",
+        "func": "// Set Variables\nvar apiKey = flow.get('apiKey');\nvar shard = flow.get('shard');\nvar netId = msg.netId;\nvar clientMac = msg.clientMac;\n\n// API Call\nmsg.headers = {\n    \"X-Cisco-Meraki-API-Key\": apiKey\n};\nmsg.url = \"https://\"+shard+\".meraki.com/api/v0/networks/\"+netId+\"/clients/\"+clientMac+\"/policy?timespan=84000\";\nmsg.method = 'put';\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 630,
+        "y": 440,
+        "wires": [
+            [
+                "9cb8d10f.3b05b",
+                "47a53ac3.b04424"
+            ]
+        ]
+    },
+    {
+        "id": "70c4da35.7ab2e4",
+        "type": "template",
+        "z": "7a0a330e.8993cc",
+        "name": "HTML Splash Page",
+        "field": "payload",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "<!DOCTYPE html>\n<html>\n<head>\n{{{payload.css}}}\n\n\n\t<meta charset=\"utf-8\">\n\t<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n\n\t<title>Registration Form</title>\n\n</head>\n<body>\n\n\t\n\n\n    <div class=\"main-content\">\n\n        <form class=\"form-register\" method=POST action=\"/splashClickLogin\">\n                <input type=\"hidden\" name=\"continue_url\" value={{payload.continue_url}}>\n                <input type=\"hidden\" name=\"host\" value ={{host}}>\n                <input type=\"hidden\" name=\"base_grant_url\" value = {{payload.base_grant_url}}>\n                <input type=\"hidden\" name=\"user_continue_url\" value = {{payload.user_continue_url}}>\n                <input type=\"hidden\" name=\"node_mac\" value = {{payload.node_mac}}>\n                <input type=\"hidden\" name=\"client_ip\" value = {{payload.client_ip}}>\n                <input type=\"hidden\" name=\"client_mac\" value = {{payload.client_mac}}>\n            \n            <div class=\"form-register-with-email\">\n\n                <div class=\"form-white-background\">\n\n                    <div class=\"form-title-row\">\n                        <h1>Login to WiFi</h1>\n                    </div>\n\n                    <div class=\"form-row\">\n                        <label>\n                            <span>Name</span>\n                            <input type=\"text\" name=\"name\" required>\n                        </label>\n                    </div>\n\n                    <div class=\"form-row\">\n                        <label>\n                            <span>Email</span>\n                            <input type=\"email\" name=\"email\" required>\n                        </label>\n                    </div>\n\n                    <div class=\"form-row\">\n                        <label class=\"form-checkbox\">\n                            <input type=\"checkbox\" name=\"checkbox\" checked value=\"accepted\" required>\n                            <span>I agree to the <a href=\"/excapTerms\" target\"_blank\">terms and conditions</a></span>\n                        </label>\n                    </div>\n\n                    <div class=\"form-row\">\n                        <button type=\"submit\">Register</button>\n                    </div>\n\n                </div>\n\n            </div>\n\n            <!-- Future Social Features\n            <div class=\"form-sign-in-with-social\">\n\n                <div class=\"form-row form-title-row\">\n                    <span class=\"form-title\">Sign in with</span>\n                </div>\n\n                <a href=\"#\" class=\"form-google-button\">Google</a>\n                <a href=\"#\" class=\"form-facebook-button\">Facebook</a>\n                <a href=\"#\" class=\"form-twitter-button\">Twitter</a>\n                \n\n            </div>\n            -->\n\n        </form>\n                Your IP: {{payload.client_ip}}\n                <br>\n                Your MAC: {{payload.client_mac}}\n\n    </div>\n\n</body>\n\n</html>\n\n",
+        "x": 470,
+        "y": 320,
+        "wires": [
+            [
+                "b4c78cc.b6ef17"
+            ]
+        ]
+    },
+    {
+        "id": "eb8c9052.2aa53",
+        "type": "inject",
+        "z": "7a0a330e.8993cc",
+        "name": "Apply Group Policy",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 150,
+        "y": 1820,
+        "wires": [
+            [
+                "6ea74d7c.66de14"
+            ]
+        ]
+    },
+    {
+        "id": "cb92411.378ccc",
+        "type": "http request",
+        "z": "7a0a330e.8993cc",
+        "name": "",
+        "method": "use",
+        "ret": "obj",
+        "url": "",
+        "tls": "",
+        "x": 810,
+        "y": 1820,
+        "wires": [
+            [
+                "bc221d14.82613"
+            ]
+        ]
+    },
+    {
+        "id": "bc221d14.82613",
+        "type": "debug",
+        "z": "7a0a330e.8993cc",
+        "name": "Apply Meraki Group Policy",
+        "active": true,
+        "console": "false",
+        "complete": "payload",
+        "x": 840,
+        "y": 1860,
+        "wires": []
+    },
+    {
+        "id": "6ea74d7c.66de14",
+        "type": "function",
+        "z": "7a0a330e.8993cc",
+        "name": "Sample Data",
+        "func": "msg = {\n    \"netId\": \"L_643451796760560141\",\n    \"clientMac\": \"74:da:38:88:7c:df\",\n    \"payload\": {\n        \"type\":\"group\",\n        \"id\":\"102\"\n    }\n };\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 330,
+        "y": 1820,
+        "wires": [
+            [
+                "7e60b2a1.a7127c"
+            ]
+        ]
+    },
+    {
+        "id": "7e60b2a1.a7127c",
+        "type": "function",
+        "z": "7a0a330e.8993cc",
+        "name": "Meraki API - Apply Group Policy",
+        "func": "// Set Variables\nvar apiKey = flow.get('apiKey');\nvar shard = flow.get('shard');\nvar netId = msg.netId;\nvar clientMac = msg.clientMac;\n\n// API Call\nmsg.headers = {\n    \"X-Cisco-Meraki-API-Key\": apiKey\n};\nmsg.url = \"https://\"+shard+\".meraki.com/api/v0/networks/\"+netId+\"/clients/\"+clientMac+\"/policy?timespan=84000\";\nmsg.method = 'put';\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 570,
+        "y": 1820,
+        "wires": [
+            [
+                "cb92411.378ccc",
+                "e974cbca.009888"
+            ]
+        ]
+    },
+    {
+        "id": "3ed771a2.5ab06e",
+        "type": "comment",
+        "z": "7a0a330e.8993cc",
+        "name": "API Utilities - Not Required",
+        "info": "",
+        "x": 155,
+        "y": 1360,
+        "wires": []
+    },
+    {
+        "id": "a232ee46.07b15",
+        "type": "inject",
+        "z": "7a0a330e.8993cc",
+        "name": "List Group Policies",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 150,
+        "y": 1620,
+        "wires": [
+            [
+                "2274ad51.a21c22"
+            ]
+        ]
+    },
+    {
+        "id": "8dd61c2e.198a",
+        "type": "http request",
+        "z": "7a0a330e.8993cc",
+        "name": "",
+        "method": "use",
+        "ret": "obj",
+        "url": "",
+        "tls": "",
+        "x": 830,
+        "y": 1620,
+        "wires": [
+            [
+                "6e68c901.a82498"
+            ]
+        ]
+    },
+    {
+        "id": "6e68c901.a82498",
+        "type": "debug",
+        "z": "7a0a330e.8993cc",
+        "name": "List Meraki Group Policies",
+        "active": true,
+        "console": "false",
+        "complete": "payload",
+        "x": 840,
+        "y": 1660,
+        "wires": []
+    },
+    {
+        "id": "27423a72.933686",
+        "type": "function",
+        "z": "7a0a330e.8993cc",
+        "name": "Meraki API - List Group Policies",
+        "func": "// Set Variables\nvar apiKey = flow.get('apiKey');\nvar shard = flow.get('shard');\nvar netId = msg.payload;\n\n// API Call\nmsg.headers = {\n    \"X-Cisco-Meraki-API-Key\": apiKey\n};\nmsg.url = \"https://dashboard.meraki.com/api/v0/networks/\"+netId+\"/groupPolicies\";\nmsg.method = 'get';\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 610,
+        "y": 1620,
+        "wires": [
+            [
+                "8dd61c2e.198a"
+            ]
+        ]
+    },
+    {
+        "id": "2274ad51.a21c22",
+        "type": "function",
+        "z": "7a0a330e.8993cc",
+        "name": "Set Network ID",
+        "func": "msg.payload = \"L_643451796760560141\"; // Test Network ID\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 340,
+        "y": 1620,
+        "wires": [
+            [
+                "27423a72.933686",
+                "903ecabb.3d9538"
+            ]
+        ]
+    },
+    {
+        "id": "e974cbca.009888",
+        "type": "debug",
+        "z": "7a0a330e.8993cc",
+        "name": "Apply GP - API Call",
+        "active": true,
+        "console": "false",
+        "complete": "true",
+        "x": 550,
+        "y": 1860,
+        "wires": []
+    },
+    {
+        "id": "b4b9c812.9d06f8",
+        "type": "debug",
+        "z": "7a0a330e.8993cc",
+        "name": "Bind Meraki Policy - response",
+        "active": true,
+        "console": "false",
+        "complete": "true",
+        "x": 890,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "47a53ac3.b04424",
+        "type": "debug",
+        "z": "7a0a330e.8993cc",
+        "name": "Bind Meraki Policy - request",
+        "active": true,
+        "console": "false",
+        "complete": "true",
+        "x": 540,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "77113a81.566dd4",
+        "type": "inject",
+        "z": "7a0a330e.8993cc",
+        "name": "List Organizations",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 150,
+        "y": 1420,
+        "wires": [
+            [
+                "76f6a8cf.ba4998"
+            ]
+        ]
+    },
+    {
+        "id": "76f6a8cf.ba4998",
+        "type": "function",
+        "z": "7a0a330e.8993cc",
+        "name": "Meraki API - List Organizations",
+        "func": "// Set Variables\nvar apiKey = global.get('apiKey');\n\n\n\n// API Call\nmsg.headers = {\n    \"X-Cisco-Meraki-API-Key\": apiKey\n};\n\nmsg.url = \"https://dashboard.meraki.com/api/v0/organizations\";\nmsg.method = 'get';\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 390,
+        "y": 1420,
+        "wires": [
+            [
+                "c17b7e80.d934"
+            ]
+        ]
+    },
+    {
+        "id": "c17b7e80.d934",
+        "type": "http request",
+        "z": "7a0a330e.8993cc",
+        "name": "",
+        "method": "use",
+        "ret": "txt",
+        "url": "",
+        "tls": "",
+        "x": 670,
+        "y": 1420,
+        "wires": [
+            [
+                "628986d0.734738"
+            ]
+        ]
+    },
+    {
+        "id": "628986d0.734738",
+        "type": "function",
+        "z": "7a0a330e.8993cc",
+        "name": "Large Int Helper",
+        "func": "// Convert the org number to a string so that it does not become corrupted \n// when the JSON conversion happens.   \nmsg.payload = msg.payload.replace(/\"id\":(.*?)(?:,)/g,\"\\\"id\\\"\\:\\\"$1\\\"\\,\");\nconsole.log(\"new json with regex replace \",msg.payload);\nreturn msg",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 860,
+        "y": 1420,
+        "wires": [
+            [
+                "475676b8.308968"
+            ]
+        ]
+    },
+    {
+        "id": "475676b8.308968",
+        "type": "json",
+        "z": "7a0a330e.8993cc",
+        "name": "",
+        "x": 690,
+        "y": 1460,
+        "wires": [
+            [
+                "20e4bbf2.a89104"
+            ]
+        ]
+    },
+    {
+        "id": "20e4bbf2.a89104",
+        "type": "debug",
+        "z": "7a0a330e.8993cc",
+        "name": "List Orgs JSON",
+        "active": true,
+        "console": "false",
+        "complete": "payload",
+        "x": 880,
+        "y": 1460,
+        "wires": []
+    },
+    {
+        "id": "657f2029.7c1a2",
+        "type": "inject",
+        "z": "7a0a330e.8993cc",
+        "name": "List Networks",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "x": 130,
+        "y": 1540,
+        "wires": [
+            [
+                "db1865af.61ed98"
+            ]
+        ]
+    },
+    {
+        "id": "db1865af.61ed98",
+        "type": "function",
+        "z": "7a0a330e.8993cc",
+        "name": "test params",
+        "func": "msg.req = {};\nmsg.req.params = {};\nmsg.req.params.orgId = global.get('orgId');\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 330,
+        "y": 1540,
+        "wires": [
+            [
+                "1843c548.3edc0b"
+            ]
+        ]
+    },
+    {
+        "id": "1843c548.3edc0b",
+        "type": "function",
+        "z": "7a0a330e.8993cc",
+        "name": "Meraki API - List Networks",
+        "func": "// Set Variables\nvar apiKey = global.get('apiKey');\nvar orgId = msg.req.params.orgId;\n\n\n// API Call\nmsg.headers = {\n    \"X-Cisco-Meraki-API-Key\": apiKey\n};\nmsg.url = \"https://dashboard.meraki.com/api/v0/organizations/\"+orgId+\"/networks\";\nmsg.method = 'get';\n\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 640,
+        "y": 1540,
+        "wires": [
+            [
+                "779a50da.a823a"
+            ]
+        ]
+    },
+    {
+        "id": "779a50da.a823a",
+        "type": "http request",
+        "z": "7a0a330e.8993cc",
+        "name": "",
+        "method": "use",
+        "ret": "obj",
+        "url": "",
+        "tls": "",
+        "x": 850,
+        "y": 1540,
+        "wires": [
+            [
+                "94da63be.54f21"
+            ]
+        ]
+    },
+    {
+        "id": "94da63be.54f21",
+        "type": "debug",
+        "z": "7a0a330e.8993cc",
+        "name": "List Nets",
+        "active": true,
+        "console": "false",
+        "complete": "true",
+        "x": 900,
+        "y": 1580,
+        "wires": []
+    },
+    {
+        "id": "903ecabb.3d9538",
+        "type": "debug",
+        "z": "7a0a330e.8993cc",
+        "name": "List GP for Network ID:",
+        "active": true,
+        "console": "false",
+        "complete": "payload",
+        "x": 510,
+        "y": 1660,
+        "wires": []
+    }
+]
